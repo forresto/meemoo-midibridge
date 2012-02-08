@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+  <head>
+    <title>midi test</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <script type="text/javascript" src="lib/midibridge-0.5.1.min.js"></script>
+    <script type="text/javascript" src="http://meemoo.org/meemoo/v1/meemoo-min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+    <style type="text/css">
+      html, body {
+        font-family: Verdana;
+        font-size: 10px;
+      }
+    </style>
+
+  </head>
+  <body>
+
+    <div>
+      devices:
+      <button id="getdevices" type="button" onclick="log(midiBridge.getDevices());">get</button>
+      <!-- <button id="refreshdevices" type="button" onclick="log(midiBridge.refreshDevices());">refresh</button> -->
+    </div>
+    
+    <div id="log"></div>
+
+    <script type="text/javascript">
+
+      $(function(){
+
+        midiBridge.init(function(midiEvent) {
+          Meemoo.send("midi", midiEvent);
+          log(midiEvent);
+        });
+
+        window.log = function (message) {
+          $("#log").prepend( JSON.stringify(message) + "<br/>" );
+        }
+
+        Meemoo
+          .setInfo({
+            title: "miditest",
+            author: "forresto",
+            description: "test midi"
+          })
+          .addInputs({})
+          .addOutputs({
+            midi: {
+              "type": "midi"
+            }
+          });
+
+      });
+
+    </script>
+  </body>
+</html>
